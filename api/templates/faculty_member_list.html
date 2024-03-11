@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .curriculum {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .curriculum h2 {
+            margin-top: 0;
+        }
+        .curriculum p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% for faculty_member in faculty_members %}
+        <div class="faculty_member">
+            <h2>{{ faculty_member.faculty_member_name }}</h2>
+            <!-- Add more faculty member details here -->
+        </div>
+    {% endfor %}
+</body>
+</html>

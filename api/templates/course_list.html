@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .course {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .course h2 {
+            margin-top: 0;
+        }
+        .course p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% for course in courses %}
+        <div class="course">
+            <h2>{{ course.course_title }}</h2>
+            <p><strong>Course Code:</strong> {{ course.course_code }}</p>
+            <p><strong>Course Credit:</strong> {{ course.course_credit }} credits.</p>
+            <p><strong>Course Time Per Week:</strong> {{ course.course_timeperweek }} hours/week.</p>
+            <p><strong>Course Content:</strong><br> {{ course.course_content }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>

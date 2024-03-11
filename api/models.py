@@ -27,6 +27,7 @@ class Curriculum(models.Model):
     
     curriculum_semester = models.CharField(max_length=3, unique=True, primary_key=True, choices=SEMESTERS)
     courses = models.ManyToManyField(Course, related_name='curriculums')
+    
            
 class faculty_member(models.Model):
     DESIGNATIONS = [

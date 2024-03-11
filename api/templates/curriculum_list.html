@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .curriculum {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .curriculum h2 {
+            margin-top: 0;
+        }
+        .curriculum p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% for curriculum in curriculums %}
+        <div class="curriculum">
+            <h2>{{ curriculum.curriculum_semester }}</h2>
+        </div>
+    {% endfor %}
+</body>
+</html>

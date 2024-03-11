@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .curriculum {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .curriculum h2 {
+            margin-top: 0;
+        }
+        .curriculum p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% for room in rooms %}
+        <div class="room">
+            <h2>{{ room.room_name }}</h2>
+            <!-- Add more room details here -->
+        </div>
+    {% endfor %}
+</body>
+</html>
