@@ -1,16 +1,18 @@
 from django.db import models
 
 class Room(models.Model):
-    room_number = models.IntegerField(max_length=10, unique=True, primary_key=True,)
+    room_number = models.CharField(max_length=3, unique=True, primary_key=True,)
     room_capacity = models.IntegerField()
-
+ 
+    
 class Course(models.Model):
     course_code = models.CharField(max_length=12, unique=True, primary_key=True,)
     course_title = models.CharField(max_length=100)
     course_credit = models.DecimalField(max_digits=3, decimal_places=2)
     course_timeperweek = models.DecimalField(max_digits=3, decimal_places=2)
     course_content = models.TextField()
- 
+    
+    
 class Curriculum(models.Model):
     SEMESTERS = [
         ('1.1', '1st Year 1st Semester'),
@@ -24,7 +26,7 @@ class Curriculum(models.Model):
     ]
     
     curriculum_semester = models.CharField(max_length=3, unique=True, primary_key=True, choices=SEMESTERS)
-    curriculum_courses = models.ForeignKey(Course, on_delete=models.PROTECT)
+    courses = models.ManyToManyField(Course, related_name='curriculums')
            
 class faculty_member(models.Model):
     DESIGNATIONS = [
@@ -44,9 +46,8 @@ class faculty_member(models.Model):
     ]
         
     email = models.EmailField(unique=True, primary_key=True,)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    phone = models.IntegerField(max_length=11,)
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=11, unique=True,)
     designation = models.CharField(max_length=2, choices=DESIGNATIONS)
-    department = models.CharField(max_length=100)
+    department = models.CharField(max_length=3, choices=DEPARTMENT)
     
