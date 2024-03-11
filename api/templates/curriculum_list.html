@@ -23,6 +23,14 @@
     {% for curriculum in curriculums %}
         <div class="curriculum">
             <h2>{{ curriculum.curriculum_semester }}</h2>
+            <h3>Courses:</h3>
+            <ul>
+            {% for course in curriculum.course_set.all %}
+                <li>{{ course.course_title }}</li>
+            {% empty %}
+                <li>No courses</li>
+            {% endfor %}
+            </ul>
         </div>
     {% endfor %}
 </body>
