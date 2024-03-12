@@ -5,16 +5,16 @@
         body {
             font-family: Arial, sans-serif;
         }
-        .curriculum {
+        .room {
             border: 1px solid #ddd;
             margin-bottom: 20px;
             padding: 20px;
             border-radius: 5px;
         }
-        .curriculum h2 {
+        .room h2 {
             margin-top: 0;
         }
-        .curriculum p {
+        .room p {
             margin-bottom: 10px;
         }
     </style>
@@ -22,8 +22,8 @@
 <body>
     {% for room in rooms %}
         <div class="room">
-            <h2>{{ room.room_name }}</h2>
-            <!-- Add more room details here -->
+            <h2>{{ room.room_number }}</h2>
+            <p>Capacity: {{ room.capacity }}</p>
         </div>
     {% endfor %}
 </body>
