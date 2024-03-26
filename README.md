@@ -1,7 +1,7 @@
 
 # UniSync
 
-This project aims to automate the process of generating and managing class/semester schedules or timetables for students and teachers developed as part of my university coursework. It provides a convenient way to create schedules based on various constraints such as course availability, room availability, and teacher availability. The system also allows for easy modification and adjustment of schedules as needed.
+This project aims to automate the process of generating and managing class/semester schedules or timetables for students and teachers. It provides a convenient way to create schedules based on various constraints such as course availability, room availability, and teacher availability. The system also allows for easy modification and adjustment of schedules as needed. Developed as part of my university coursework.
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ This project aims to automate the process of generating and managing class/semes
 
 5. Install the project dependencies from `requirements.txt`:
 
-    ```bash
+    ```python
     pip install -r requirements.txt
     ```
 
