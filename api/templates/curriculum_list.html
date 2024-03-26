@@ -17,21 +17,27 @@
         .curriculum p {
             margin-bottom: 10px;
         }
+        .course {
+            font-size: 16px;
+            color: #333;
+        }
     </style>
 </head>
-<body>
-    {% for curriculum in curriculums %}
-        <div class="curriculum">
-            <h2>{{ curriculum.curriculum_semester }}</h2>
-            <h3>Courses:</h3>
-            <ul>
-            {% for course in curriculum.course_set.all %}
-                <li>{{ course.course_title }}</li>
+    <body>
+            <h1>Curriculums</h1>
+            {% for curriculum in curriculums %}
+            <div class="curriculum">
+                <h2>{{ curriculum.get_curriculum_semester_display }}</h2>
+                <ul>
+                {% for course in curriculum.courses.all %}
+                    <li><span class="course">{{ course.course_code }}: {{ course.course_title }}</span></li>
+                {% empty %}
+                    <li>No courses in this curriculum.</li>
+                {% endfor %}
+                </ul>
+            </div>
             {% empty %}
-                <li>No courses</li>
+            <p>No curriculums available.</p>
             {% endfor %}
-            </ul>
-        </div>
-    {% endfor %}
-</body>
+    </body>
 </html>
