@@ -1,8 +1,10 @@
+from operator import is_
 from django.db import models
 
 class Room(models.Model):
     room_number = models.CharField(max_length=3, unique=True, primary_key=True,)
-    room_capacity = models.IntegerField()
+    room_capacity = models.PositiveIntegerField(null=True, blank=True)
+    is_lab = models.BooleanField(default=False)
     
     def __str__(self):
         return f'{self.room_number} - Capacity: {self.room_capacity}'
@@ -14,6 +16,7 @@ class Course(models.Model):
     course_credit = models.DecimalField(max_digits=3, decimal_places=2)
     course_timeperweek = models.DecimalField(max_digits=3, decimal_places=2)
     course_content = models.TextField()
+    is_lab_course = models.BooleanField(default=False)
     
     
 class Curriculum(models.Model):
@@ -58,12 +61,17 @@ class ClassSlots(models.Model):
         ('SAT', 'Saturday'),
     ]
     
-    day = models.CharField(max_length=3, choices=DAYS, unique=True, primary_key=True,)
-    class_slots = models.ManyToManyField(ClassSlot,)
+    day = models.CharField(max_length=3, choices=DAYS)
+    class_slots = models.ManyToManyField(ClassSlot)
+    evening_slot = models.BooleanField(default=False)
+    
+    class Meta:
+        unique_together = ('day', 'evening_slot',)
     
     def __str__(self):
         slots = ', '.join([str(slot) for slot in self.class_slots.all()])
-        return f'{self.day} - {slots}'
+        shift = 'Evening Classes' if self.evening_slot else 'Morning Classes'
+        return f'{self.day} - {shift} - {slots}'
     
 class Instructor(models.Model):
     DESIGNATIONS = [
@@ -88,7 +96,8 @@ class Instructor(models.Model):
     phone = models.CharField(max_length=14, unique=True,)
     designation = models.CharField(max_length=2, choices=DESIGNATIONS)
     department = models.CharField(max_length=3, choices=DEPARTMENT)
-    preferred_time = models.ForeignKey(ClassSlot, on_delete=models.PROTECT)
+    preferred_time = models.ForeignKey(ClassSlot, on_delete=models.PROTECT, null=True, blank=True)
+    is_guest = models.BooleanField(default=False)
     #max_class_per_day = models.IntegerField(null=True, blank=True)
     
 class RoomSchedule(models.Model):
