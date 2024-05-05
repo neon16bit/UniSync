@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Course, Curriculum, Room, faculty_member
+from .models import Course, Curriculum, Room, Instructor
 
 def course_list(request):
     courses = Course.objects.all()
@@ -14,7 +14,7 @@ def room_list(request):
     return render(request, 'room_list.html', {'rooms': rooms})
 
 def faculty_member_list(request):
-    faculty_members = faculty_member.objects.all()
+    faculty_members = Instructor.objects.all()
     return render(request, 'faculty_member_list.html', {'faculty_members': faculty_members})
 
 
