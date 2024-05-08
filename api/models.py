@@ -17,6 +17,7 @@ class Course(models.Model):
     course_timeperweek = models.DecimalField(max_digits=3, decimal_places=2)
     course_content = models.TextField()
     is_lab_course = models.BooleanField(default=False)
+    is_diploma_course = models.BooleanField(default=False)
     
     
 class Curriculum(models.Model):
@@ -33,6 +34,7 @@ class Curriculum(models.Model):
     
     curriculum_semester = models.CharField(max_length=3, unique=True, primary_key=True, choices=SEMESTERS)
     courses = models.ManyToManyField(Course,)
+    is_diploma_curriculum = models.BooleanField(default=False)
     
     def get_course_list(self):
         return self.courses.values_list('course_code', flat=True)
@@ -89,6 +91,10 @@ class Instructor(models.Model):
         ('EEE', 'Electrical and Electronic Engineering'),
         ('CE', 'Civil Engineering'),
         ('ECE', 'Electronics and Communication Engineering'),
+        ('ENG', 'English Language and Literature'),
+        ('LAW', 'Law'),
+        ('BBA', 'Business Studies'),
+        ('Guest', 'Guest')
     ]
         
     email = models.EmailField(unique=True, primary_key=True,)
@@ -98,12 +104,12 @@ class Instructor(models.Model):
     department = models.CharField(max_length=3, choices=DEPARTMENT)
     preferred_time = models.ForeignKey(ClassSlot, on_delete=models.PROTECT, null=True, blank=True)
     is_guest = models.BooleanField(default=False)
-    #max_class_per_day = models.IntegerField(null=True, blank=True)
     
 class RoomSchedule(models.Model):
     curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     section_name = models.CharField(max_length=1)
+    is_evening = models.BooleanField(default=False)
     
     class Meta:
         unique_together = ('curriculum', 'room', 'section_name',)
@@ -121,7 +127,6 @@ class ClassSchedule(models.Model):
     curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
     course_instructors = models.ManyToManyField(CourseInstructor)
     rooms = models.ManyToManyField(RoomSchedule)
-    max_class_per_week = 4
     
 class GenetareSchedule(models.Model):
     class_schedule = models.ManyToManyField(ClassSchedule)
