@@ -128,6 +128,6 @@ class ClassSchedule(models.Model):
     course_instructors = models.ManyToManyField(CourseInstructor)
     rooms = models.ManyToManyField(RoomSchedule)
     
-class GenetareSchedule(models.Model):
-    class_schedule = models.ManyToManyField(ClassSchedule)
+class GenerateSchedule(models.Model):
+    class_schedules = models.ManyToManyField(ClassSchedule)
     class_days = models.ManyToManyField(ClassSlots)
