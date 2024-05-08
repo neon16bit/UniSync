@@ -94,7 +94,7 @@ class Instructor(models.Model):
         ('ENG', 'English Language and Literature'),
         ('LAW', 'Law'),
         ('BBA', 'Business Studies'),
-        ('Guest', 'Guest')
+        ('GST', 'Guest')
     ]
         
     email = models.EmailField(unique=True, primary_key=True,)
