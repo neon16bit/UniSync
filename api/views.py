@@ -24,6 +24,10 @@ def generate_schedule(request):
     if request.method == 'POST':
         # Handle form submission
         curriculum_ids = request.POST.getlist('curriculum')
+        if not curriculum_ids:
+            messages.error(request, 'Please select at least one curriculum.')
+            return redirect('generate_schedule')
+
         curriculums = Curriculum.objects.filter(pk__in=curriculum_ids)
 
         class_schedules = []
@@ -31,6 +35,10 @@ def generate_schedule(request):
             course_instructors = []
             for course in curriculum.courses.all():
                 instructor_ids = request.POST.getlist(f'course_{course.pk}_instructors')
+                if not instructor_ids:
+                    messages.error(request, f'Please select at least one instructor for {course.course_code}.')
+                    return redirect('generate_schedule')
+
                 instructors = Instructor.objects.filter(pk__in=instructor_ids)
                 course_instructor = CourseInstructor.objects.create(curriculum=curriculum, course=course)
                 course_instructor.instructors.set(instructors)
@@ -38,6 +46,10 @@ def generate_schedule(request):
 
             section_names = request.POST.getlist(f'curriculum_{curriculum.pk}_sections')
             room_ids = request.POST.getlist(f'curriculum_{curriculum.pk}_rooms')
+            if not section_names or not room_ids:
+                messages.error(request, f'Please provide section names and rooms for {curriculum.curriculum_semester}.')
+                return redirect('generate_schedule')
+
             rooms = Room.objects.filter(pk__in=room_ids)
 
             room_schedules = []
@@ -52,6 +64,10 @@ def generate_schedule(request):
             class_schedules.append(class_schedule)
 
         class_days_ids = request.POST.getlist('class_days')
+        if not class_days_ids:
+            messages.error(request, 'Please select at least one class day.')
+            return redirect('generate_schedule')
+
         class_days = ClassSlots.objects.filter(pk__in=class_days_ids)
 
         generate_schedule = GenerateSchedule.objects.create()
@@ -76,7 +92,7 @@ def generate_schedule(request):
         'class_slots': class_slots,
         'class_days': class_days,
     }
-
+    
     return render(request, 'generate_schedule.html', context)
 
 

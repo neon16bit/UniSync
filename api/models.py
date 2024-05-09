@@ -82,7 +82,6 @@ class Instructor(models.Model):
         ('P', 'Professor'),
         ('AP', 'Adjunct Professor'),
         ('AS', 'Assistant Professor'),
-        ('DH', 'Departmental Head'),
         ('AD', 'Adjunct'),
     ]
     
@@ -103,6 +102,7 @@ class Instructor(models.Model):
     designation = models.CharField(max_length=2, choices=DESIGNATIONS)
     department = models.CharField(max_length=3, choices=DEPARTMENT)
     preferred_time = models.ForeignKey(ClassSlot, on_delete=models.PROTECT, null=True, blank=True)
+    is_depertmental_head = models.BooleanField(default=False)
     is_guest = models.BooleanField(default=False)
     
 class RoomSchedule(models.Model):
