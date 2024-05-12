@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ClassSchedule, ClassSlot, ClassSlots, GenerateSchedule, Instructor, Room, Curriculum, Course, CourseInstructor, RoomSchedule
+from .models import ClassSlot, ClassSlots,Instructor, Room, Course, Curriculum, CourseInstructor, RoomSchedule, ClassSchedule,  GenerateSchedule
 
 admin.site.register(Room)
 admin.site.register(Curriculum)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db import transaction
 from django.contrib import messages
-from .models import Curriculum, Course, Room, ClassSlot, ClassSlots, Instructor, RoomSchedule, CourseInstructor, ClassSchedule, GenerateSchedule
+from .models import Instructor, Curriculum, Course, Room, ClassSlot, ClassSlots, RoomSchedule, CourseInstructor, ClassSchedule, GenerateSchedule
 
 def course_list(request):
     courses = Course.objects.all()

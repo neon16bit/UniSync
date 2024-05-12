@@ -1,4 +1,4 @@
-from operator import is_
+import uuid
 from django.db import models
 
 class Room(models.Model):
@@ -6,12 +6,16 @@ class Room(models.Model):
     room_capacity = models.PositiveIntegerField(null=True, blank=True)
     is_lab = models.BooleanField(default=False)
     
+    class Meta:
+        ordering = ['room_number']
+    
     def __str__(self):
-        return f'{self.room_number} - Capacity: {self.room_capacity}'
+        return f'{self.room_number} - Capacity: {self.room_capacity} - Lab: {self.is_lab}'
  
     
 class Course(models.Model):
-    course_code = models.CharField(max_length=12, unique=True, primary_key=True,)
+    #uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
+    course_code = models.CharField(max_length=12, primary_key=True, unique=True)
     course_title = models.CharField(max_length=100)
     course_credit = models.DecimalField(max_digits=3, decimal_places=2)
     course_timeperweek = models.DecimalField(max_digits=3, decimal_places=2)
@@ -19,6 +23,11 @@ class Course(models.Model):
     is_lab_course = models.BooleanField(default=False)
     is_diploma_course = models.BooleanField(default=False)
     
+    #class Meta:
+        #unique_together = ('course_code', 'is_diploma_course',)
+        
+    def __str__(self):
+        return f'{self.course_code} - {self.course_title}'
     
 class Curriculum(models.Model):
     SEMESTERS = [
@@ -32,9 +41,13 @@ class Curriculum(models.Model):
         ('4.2', '4th Year 2nd Semester'),
     ]
     
-    curriculum_semester = models.CharField(max_length=3, unique=True, primary_key=True, choices=SEMESTERS)
+    curriculum_semester = models.CharField(max_length=3, choices=SEMESTERS)
     courses = models.ManyToManyField(Course,)
     is_diploma_curriculum = models.BooleanField(default=False)
+    
+    class Meta:
+        unique_together = ('curriculum_semester', 'is_diploma_curriculum',)
+        ordering = ['curriculum_semester', 'is_diploma_curriculum',]
     
     def get_course_list(self):
         return self.courses.values_list('course_code', flat=True)
@@ -105,6 +118,13 @@ class Instructor(models.Model):
     is_depertmental_head = models.BooleanField(default=False)
     is_guest = models.BooleanField(default=False)
     
+    class Meta:
+        ordering = ['department', 'designation', 'name']    
+    
+    def __str__(self):
+        designation = dict(self.DESIGNATIONS)[self.designation]
+        return f'{self.department} - {designation} - {self.name}'
+    
 class RoomSchedule(models.Model):
     curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
@@ -121,12 +141,18 @@ class CourseInstructor(models.Model):
     curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     instructors = models.ManyToManyField(Instructor)
+    
+    def __str__(self):
+        return f'{self.curriculum.curriculum_semester} - {self.course.course_code}'
         
      
 class ClassSchedule(models.Model):
     curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
     course_instructors = models.ManyToManyField(CourseInstructor)
     rooms = models.ManyToManyField(RoomSchedule)
+    
+    def __str__(self):
+        return f'{self.curriculum.curriculum_semester}'
     
 class GenerateSchedule(models.Model):
     class_schedules = models.ManyToManyField(ClassSchedule)
