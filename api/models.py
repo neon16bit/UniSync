@@ -14,8 +14,8 @@ class Room(models.Model):
  
     
 class Course(models.Model):
-    #uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
-    course_code = models.CharField(max_length=12, primary_key=True, unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    course_code = models.CharField(max_length=12)
     course_title = models.CharField(max_length=100)
     course_credit = models.DecimalField(max_digits=3, decimal_places=2)
     course_timeperweek = models.DecimalField(max_digits=3, decimal_places=2)
@@ -23,8 +23,8 @@ class Course(models.Model):
     is_lab_course = models.BooleanField(default=False)
     is_diploma_course = models.BooleanField(default=False)
     
-    #class Meta:
-        #unique_together = ('course_code', 'is_diploma_course',)
+    class Meta:
+        unique_together = ('course_code', 'is_diploma_course',)
         
     def __str__(self):
         return f'{self.course_code} - {self.course_title}'
@@ -61,6 +61,9 @@ class Curriculum(models.Model):
 class ClassSlot(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
+    
+    class Meta:
+        unique_together = ('start_time', 'end_time')
     
     def __str__(self):
         return f'{self.start_time} - {self.end_time}'
