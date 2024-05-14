@@ -42,6 +42,16 @@
         }
     </style>
 
+    <script>
+        document.getElementById('curriculumSelect').addEventListener('change', function() {
+            if (this.value) {
+                document.getElementById('otherContent').style.display = 'block';
+            } else {
+                document.getElementById('otherContent').style.display = 'none';
+            }
+        });
+    </script>
+
 </head>
 <body>
     {% block content %}
@@ -51,9 +61,14 @@
         {% csrf_token %}
 
         <h2>Select Curriculums</h2>
-        {% for curriculum in curriculums %}
-        <input type="checkbox" name="curriculum" value="{{ curriculum.pk }}"> {{ curriculum }}
-        {% endfor %}
+        <select id="curriculumSelect" name="curriculum">
+            <option value="">--Select a curriculum--</option>
+            {% for curriculum in curriculums %}
+            <option value="{{ curriculum.pk }}">{{ curriculum }}</option>
+            {% endfor %}
+        </select>
+
+        <div id="curriculumDetails"></div>
 
         {% for curriculum in curriculums %}
         <h3>{{ curriculum }}</h3>
@@ -86,10 +101,10 @@
 
         <h2>Select Class Days</h2>
         {% for class_day in class_days %}
-        <input type="checkbox" name="class_days" value="{{ class_day.pk }}"> {{ class_day }}
+        <input type="checkbox" name="class_days" value="{{ class_day.pk }}"> {{ class_day }}<br>
         {% endfor %}
 
-        <button type="submit">Generate Schedule</button>
+        <br><button type="submit">Save</button>
     </form>
     {% endblock %}
 </body>

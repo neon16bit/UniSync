@@ -1,5 +1,7 @@
+from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from django.db import transaction
+from django.db.models import Q
 from django.contrib import messages
 from .models import Instructor, Curriculum, Course, Room, ClassSlot, ClassSlots, RoomSchedule, CourseInstructor, ClassSchedule, GenerateSchedule
 
@@ -94,6 +96,43 @@ def generate_schedule(request):
     }
     
     return render(request, 'generate_schedule.html', context)
+
+
+class CurriculumListView(ListView):
+    model = Curriculum
+    template_name = 'curriculum_list.html'
+    context_object_name = 'Curriculums'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        q = self.request.GET.get('q')
+        if q:
+            queryset = queryset.filter(
+                Q(curriculum_semester__icontains=q) |
+                Q(courses__course_code__icontains=q)
+            ).distinct()
+        return queryset
+    
+    
+class FacultyMemberListView(ListView):
+    model = Instructor
+    template_name = 'faculty_member_list.html'
+    context_object_name = 'departments'
+    paginate_by = 10  # change to the number of items you want per page
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        q = self.request.GET.get('q')
+        if q:
+            queryset = queryset.filter(
+                Q(name__icontains=q) |
+                Q(designation__icontains=q) |
+                Q(department__icontains=q) |
+                Q(email__icontains=q) |
+                Q(phone__icontains=q)
+            )
+        return queryset.order_by('department')
 
 
 # api views
