@@ -1,0 +1,28 @@
+{% if curriculum %}
+<h3>{{ curriculum }}</h3>
+<h4>Courses and Instructors</h4>
+{% for course in courses %}
+<div>
+    <label>{{ course.course_code }} - {{ course.course_title }}</label>
+    <select name="course_{{ course.pk }}_instructors" multiple>
+        {% for instructor in instructors %}
+        <option value="{{ instructor.pk }}">{{ instructor.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endfor %}
+
+<h4>Sections and Rooms</h4>
+<div>
+    <label>Section Names:</label>
+    <input type="text" name="curriculum_{{ curriculum.pk }}_sections" placeholder="e.g., A, B, C">
+</div>
+<div>
+    <label>Rooms:</label>
+    <select name="curriculum_{{ curriculum.pk }}_rooms" multiple>
+        {% for room in rooms %}
+        <option value="{{ room.pk }}">{{ room }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endif %}

@@ -133,6 +133,23 @@ class FacultyMemberListView(ListView):
                 Q(phone__icontains=q)
             )
         return queryset.order_by('department')
+    
+def curriculum_fields(request):
+    curriculum_id = request.GET.get('curriculum')
+    if curriculum_id:
+        curriculum = Curriculum.objects.get(pk=curriculum_id)
+        courses = curriculum.courses.all()
+        instructors = Instructor.objects.all()
+        rooms = Room.objects.all()
+        context = {
+            'curriculum': curriculum,
+            'courses': courses,
+            'instructors': instructors,
+            'rooms': rooms,
+        }
+        return render(request, 'curriculum_fields.html', context)
+    else:
+        return render(request, 'curriculum_fields.html')
 
 
 # api views
